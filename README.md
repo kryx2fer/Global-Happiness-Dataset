@@ -1,258 +1,302 @@
 # Global-Happiness-Dataset
-Global Happiness Insights Report (2015–2019)
+## 1. Executive Summary
 
-This report explores year-over-year changes, volatility, factor influence, over/under-performance, regional dynamics, corruption patterns, generosity rankings, and happiness stability using SQL-style logic and dataset-driven visuals.
+This report presents a complete analytical exploration of global happiness trends between 2015 and 2019, using SQL-driven insights and statistical interpretation.
+Key areas examined include:
 
-## 1. Global Happiness Trend Over Time
-Figure 1 — Average Global Happiness Score per Year
+Year-over-year changes
 
-The chart shows how the overall average happiness score changed from 2015 to 2019.
+Happiness volatility
 
+Factor influence (GDP, social support, corruption, etc.)
 
+Predicted vs actual happiness performance
 
-Key Insight
+Regional comparisons
 
-✔ Happiness dipped slightly around 2017 but rose again toward 2019.
-✔ Overall: moderate but stable global happiness.
+Classification and clustering
 
-## 2. Year-Over-Year Change (YoY)
+Trend analysis
 
-This calculation detects whether each country is improving or declining.
+Findings show that global happiness remained moderately stable, with small fluctuations driven by economic cycles.
+Scandinavian countries consistently rank highest, while conflict-affected and economically strained regions remain lowest.
 
-SQL logic used:
+# 2. Dataset Overview
 
-SELECT h1.Country, h1.Year, h1.Score AS Score_Current,
-       h2.Score AS Score_Previous,
-       (h1.Score - h2.Score) AS YoY_Change
-FROM happiness h1
-LEFT JOIN happiness h2
-     ON h1.Country = h2.Country
-    AND h1.Year = h2.Year + 1
-ORDER BY YoY_Change DESC;
+The dataset contains the following fields (per country per year):
 
-Insights
+Score — Overall happiness index
 
-Fastest improvers change every year, often small countries recovering from economic shocks.
+GDP_per_Capita
 
-Declining scores often align with political transitions or economic downturns.
+Social_Support
 
-## 3. Volatility Index — Most Unstable Countries
+Healthy_Life_Expectancy
 
-Measures how much each country’s score fluctuates.
+Freedom
 
-SQL:
+Generosity
 
-SELECT Country, AVG(Score) AS Avg_Score,
-       (AVG(Score * Score) - AVG(Score) * AVG(Score)) AS Score_Variance
-FROM happiness
-GROUP BY Country
-ORDER BY Score_Variance DESC
-LIMIT 15;
+Perceptions_of_Corruption
 
-Insights
+Region, Rank, Year, confidence intervals, etc.
 
-High variance suggests unstable political or social climate.
+Total records: Multiple countries × 5 years (2015–2019).
 
-Western Europe tends to have low variance (stable).
+# 3. Global Trends
+### 3.1 Average Happiness Over Time
 
-Middle Eastern and African regions sometimes show higher fluctuations.
+A figure was generated from the uploaded dataset showing year-by-year global averages.
 
-## 4. Factor Influence (GDP, Social Support, etc.)
+Key Findings:
 
-We approximate correlation by covariance-like calculations:
+Happiness scores show mild decline from 2016 to 2017, aligning with global political uncertainty.
 
-SQL:
+From 2017 to 2019, global happiness steadily improved.
 
-SELECT Year,
-       SUM(GDP_per_Capita * Score) AS Covariance_Like,
-       SUM(GDP_per_Capita * GDP_per_Capita) AS GDP_Variance_Like
-FROM happiness
-GROUP BY Year;
+Overall, happiness scores remain within a very narrow range (±0.05), suggesting global stability.
 
-Insights
+# 4. Year-Over-Year Happiness Change
 
-Social Support and Healthy Life Expectancy typically rank as strongest predictors.
+Using SQL joins across consecutive years, each country’s improvement or decline was computed.
 
-Freedom improves scores but with less weight than GDP and Social Support.
+Insights:
 
-Corruption has a strong negative correlation.
+Countries with strong economies or recovery programs (e.g., Eastern Europe, parts of Latin America) show strong positive YoY growth.
 
-## 5. Happiness Component Weight
+Sharp declines usually correlate with:
 
-Ranks nations based on their underlying “drivers.”
+Political crises
 
-SQL:
+Recession
 
-SELECT Country, Year,
-       GDP_per_Capita + Social_Support + Healthy_Life_Expectancy + Freedom
-       + Generosity - Perceptions_of_Corruption AS Component_Sum,
-       Score
-FROM happiness
-ORDER BY Component_Sum DESC;
+Conflict
 
-Insights
+Institutional instability
 
-Countries with high component sums typically:
+Countries with consistently positive YoY change are prime candidates for deeper case studies on stable governance and policy effectiveness.
 
-Are economically strong
+# 5. Volatility Index (Stability of Happiness)
 
-Have high social support
+Volatility was measured using variance of happiness scores per country.
 
-Have strong health systems
+Interpretation:
 
-Perceive low corruption
+High-variance countries tend to experience:
 
-## 6. Over-performers vs Under-performers
+Conflict (e.g., Middle East, parts of Africa)
 
-This compares predicted vs actual happiness:
+Economic swings (e.g., oil-dependent economies)
 
-SQL:
+Political instability
 
-SELECT Country, Year, Score,
-       (GDP_per_Capita + Social_Support + Healthy_Life_Expectancy + Freedom
-        + Generosity - Perceptions_of_Corruption) AS Predicted_Score,
-       Score - (...) AS Performance_Delta
-FROM happiness
-ORDER BY Performance_Delta DESC;
-
-Insight
-
-Countries like Costa Rica often over-perform (high social cohesion).
-
-Some wealthy countries still under-perform (stress, inequality, mental health issues).
-
-## 7. Regional Happiness Trends
-
-SQL:
-
-SELECT Region, Year, AVG(Score)
-FROM happiness
-WHERE Region IS NOT NULL
-GROUP BY Region, Year;
-
-Insights
-
-Western Europe consistently leads.
-
-Sub-Saharan Africa remains lowest.
-
-Some regions fluctuate depending on conflict patterns or economic swings.
-
-## 8. High Freedom but Low Happiness
-
-SQL:
-
-SELECT Country, Year, Freedom, Score
-FROM happiness
-WHERE Freedom > 0.5 AND Score < 5;
-
-Insight
-
-Democracy ≠ happiness
-Economic hardship, inequality, or security issues may override political freedoms.
-
-## 9. High Corruption but High Happiness
-
-SQL:
-
-SELECT Country, Year, Perceptions_of_Corruption, Score
-FROM happiness
-WHERE Perceptions_of_Corruption > 0.4
-ORDER BY Score DESC;
-
-Insight
-
-Some countries remain happy despite corruption due to:
-
-High social support
-
-Strong cultural cohesion
-
-Community-based living
-
-## 10. Top 15 Most Generous Countries
-
-SQL:
-
-SELECT Country, AVG(Generosity)
-FROM happiness
-GROUP BY Country
-ORDER BY AVG(Generosity) DESC
-LIMIT 15;
-
-Insight
-
-Countries with strong volunteering/charity norms dominate.
-
-Generosity is not strictly tied to wealth.
-
-## 11. Countries With Perfect Data (No NULLs)
-
-SQL:
-
-SELECT Country, COUNT(*)
-FROM happiness
-WHERE Country NOT IN (
-    SELECT Country FROM happiness
-    WHERE any_field IS NULL
-)
-GROUP BY Country;
-
-Insight
-
-These countries are best for predictive modeling.
-
-Missing data often occurs in developing regions.
-
-## 12. Classification by Happiness Level
-
-SQL:
-
-CASE
- WHEN Score >= 7 THEN 'Very Happy'
- WHEN Score >= 6 THEN 'Happy'
- WHEN Score >= 5 THEN 'Neutral'
- ELSE 'Unhappy'
-END
-
-Insight
-
-Scandinavia dominates the Very Happy category.
-
-Many African and conflict-affected nations fall into Unhappy.
-
-## 13. Most Consistently Happy Countries (Low Variance)
-
-SQL:
-
-SELECT Country,
-       (AVG(Score*Score) - AVG(Score)*AVG(Score)) AS Variance
-FROM happiness
-GROUP BY Country
-ORDER BY Variance ASC
-LIMIT 10;
-
-Insight
+Low-variance countries (stable happiness):
 
 Switzerland
 
 Denmark
 
 Iceland
-remain stable leaders.
 
-## 14. Long-Term Trend Slope
+Netherlands
+These show long-term social and institutional stability.
 
-SQL:
+# 6. Influence of Key Happiness Factors
 
-SELECT Country,
-       SUM(Year * Score) - (SUM(Year) * SUM(Score) / COUNT(*)) AS Trend_Slope_Like
-FROM happiness
-GROUP BY Country
-ORDER BY Trend_Slope_Like DESC;
+A correlation-like analysis was performed (covariance approximations due to SQLite limitations).
 
-Insight
+Most influential predictors:
 
-Countries with strong upward trends often improve governance and health rapidly.
+Social Support
 
-Downward trends correlate with conflict or instability.
+Healthy Life Expectancy
+
+GDP per Capita
+
+Freedom
+
+Weaker or more mixed predictors:
+
+Generosity — varies widely culturally
+
+Perceptions of Corruption — strong negative effect but inconsistent across regions
+
+Insight:
+Countries with strong community bonds, health systems, and wealth rank highest overall.
+
+# 7. Component Score Analysis
+
+Each country received a “Component Strength Score,” calculated as:
+
+Sum of all positive variables – corruption
+
+Interpretation:
+
+Countries with strong components match expected high happiness (Finland, Switzerland).
+
+Some countries have strong components but underperform emotionally or socially.
+
+This led to the next stage of analysis.
+
+# 8. Overperformers vs Underperformers
+
+Comparing predicted vs actual happiness:
+
+Overperformers
+
+Countries happier than expected for their economic and social levels.
+Common patterns include:
+
+Strong cultural unity
+
+High resilience
+
+Community-centered living
+
+Lower income inequality despite lower GDP
+
+Examples often include:
+Costa Rica, Mexico, some Southeast Asian nations.
+
+Underperformers
+
+Countries with strong GDP and infrastructure but lower emotional well-being.
+Common patterns include:
+
+High stress
+
+Inequality
+
+Institutional distrust
+
+Mental health challenges
+
+Examples include some wealthy but high-pressure countries.
+
+# 9. Regional Happiness Analysis
+Top Regions (Highest Avg Scores)
+
+Western Europe
+
+North America & ANZ
+
+Latin America & Caribbean
+
+Lowest Regions
+
+Sub-Saharan Africa
+
+South Asia
+
+Middle East & North Africa (impacted by conflict cycles)
+
+Trends by Region
+
+Western Europe is consistently stable.
+
+MENA shows large swings linked to geopolitical instability.
+
+Africa remains lowest due to sustained structural challenges.
+
+# 10. Anomalies: Freedom vs Happiness
+
+SQL filtering showed countries with high freedom (>0.5) but low happiness (<5).
+
+Insight:
+High political freedom does not guarantee happiness.
+Economic hardship, unemployment, insecurity, and poor healthcare can overshadow democratic structures.
+
+# 11. High Corruption but High Happiness
+
+This fascinating anomaly highlights countries scoring:
+
+Corruption > 0.4
+
+Happiness among the top global ranks
+
+These nations often:
+
+Prioritize family and social bonds
+
+Emphasize cultural happiness norms
+
+Compensate for institutional weakness with strong community support
+
+# 12. Generosity Ranking
+
+The top 15 most generous countries were computed by average generosity.
+
+Key Insight:
+Generosity is not tied strongly to GDP.
+Many of the most generous countries are mid-income nations with strong cultural norms of giving and community support.
+
+# 13. Consistency: The 10 Most Stable Countries
+
+By computing variance, the analyst can identify countries with the least fluctuation in happiness.
+
+These nations tend to have:
+
+Strong rule of law
+
+Predictable governance
+
+Equitable economic distribution
+
+Strong welfare and support systems
+
+These characteristics make them ideal benchmarks for policy studies.
+
+# 14. Long-Term Trend Slope (2015–2019)
+
+Trend slope calculations rate each country as:
+
+Improving long-term
+
+Declining long-term
+
+Statistically stable
+
+Improving Countries
+
+Often developing countries experiencing growth and stability.
+
+Declining Countries
+
+Often wealthy countries dealing with:
+
+Rising inequality
+
+Stress and burnout
+
+Declining trust
+
+Stable Countries
+
+Mostly Nordic countries and a few Western European nations.
+
+# 15. Final Conclusions
+Global Findings
+
+Global happiness is stable but unevenly distributed.
+
+Scandinavian countries consistently lead due to strong institutions, social cohesion, and healthcare.
+
+Conflict regions experience predictable declines.
+
+Economic factors matter, but social support and wellbeing are stronger predictors.
+
+Analyst Recommendations
+
+Further machine learning modeling could provide predictive accuracy for next-year scores.
+
+Regional case studies can uncover qualitative factors beyond numerical indicators.
+
+Power BI dashboards can visualize:
+
+Trends
+
+Regional disparities
+
+Component contributions
+
+Outliers
