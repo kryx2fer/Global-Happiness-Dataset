@@ -1,176 +1,180 @@
-**World Happiness Dataset - Data Analysis Report**
+# ****World Happiness Report - Comprehensive Data Analysis****
 
-_Using SQLite-Based Insights_
+**By Christopher Iloka**
 
-**1\. Overview of the Dataset**
+## **1\. Dataset Overview**
 
-The World Happiness dataset captures global well-being measures using key indicators such as:
+The World Happiness dataset includes **169 countries**, grouped into **11 regions**, covering **2015 to 2019**. The dashboard tracks:
 
 - Happiness Score
 - GDP per Capita
 - Social Support
 - Healthy Life Expectancy
+- Life Expectancy Contribution
 - Freedom
 - Generosity
 - Perceptions of Corruption
-- Region (available for some years)
+- Confidence Intervals (Lower CI and Upper CI)
 
-This analysis uses SQL queries to examine trends, rankings, improvements, and relationships between socioeconomic factors and happiness.
+The global summaries shown in the visuals include:
 
-**2\. Key Analytical Findings**
+- **Average Happiness Score:** 5.38
+- **Life Expectancy Contribution:** 0.61
+- **Sum of GDP per Capita:** 716.35
+- **Time Span:** 5 years
 
-**2.1 Top 10 Happiest Countries (Across All Years)**
+These indicators allow you to study global well-being from both a statistical and regional perspective.
 
-Countries with the highest recorded happiness scores represent global leaders in well-being.  
-These countries often have strong social support, high GDP, low corruption, and healthy life expectancy.
+## **2\. Key Analytical Findings**
 
-**Insight**
+### ****2.1 Top 10 Happiest Countries****
 
-- High-scoring nations maintain exceptional living standards.
-- They often appear repeatedly in annual reports, indicating long-term stability rather than temporary surges.
+The bar chart highlights the top countries, including:
 
-**2.2 Global Happiness Trend Over Time (Yearly Averages)**
+- Denmark
+- Norway
+- Finland
+- Switzerland
+- Iceland
+- Netherlands
+- Canada
+- Sweden
+- New Zealand
 
-Average happiness scores per year reveal whether global happiness is rising, falling, or stable.
+**Insight:**  
+These nations show long-term stability. They repeatedly appear in top rankings thanks to strong institutions, high trust, social safety nets, and low corruption.
 
-**Insight**
+### ****2.2 Global Happiness Trend (2015-2019)****
 
-- In many global datasets, happiness is remarkably stable year-to-year.
-- Declines in certain years often correlate with global crises or economic shocks.
+The line chart covering yearly averages shows:
 
-**2.3 Average Happiness Score per Country (Long-Term Rankings)**
+- 2015: 5.376
+- 2016: 5.382
+- 2017: 5.354
+- 2018: 5.382
+- 2019: 5.407
 
-Calculating long-term averages helps identify consistently happy countries.
+**What the chart reveals:**  
+A small dip in 2017 is visible, followed by a steady recovery. Overall, the trend is stable, matching SQL findings that global happiness rarely moves sharply unless major events occur.
 
-**Insight**
+### ****2.3 Long-Term Average Happiness by Country****
 
-- Countries like Finland, Denmark, Switzerland, Iceland, and Netherlands often remain at the top.
-- Stability in happiness is strongly associated with strong institutions, social equality, and strong community trust.
+The dashboard and SQL analysis both point to consistent leaders such as Finland, Denmark, Switzerland, Iceland, and Netherlands.
 
-**2.4 Countries With the Largest Change (2015 → 2019)**
+**Insight:**  
+Long-term averages help filter out temporary spikes. These countries stay on top because of strong social equality and reliable governance.
 
-Analyzing improvement and decline between two benchmark years reveals significant shifts.
+### ****2.4 Countries With the Largest Change (2015 → 2019)****
 
-**Improvers Insight**
+Using SQL, improvement and decline were measured over the five-year period.
 
-- Nations with large positive change often experienced:
-  - Economic reforms
-  - Increased political stability
-  - Improved social welfare
+**Insights:**
 
-**Decliners Insight**
+- **Improving countries** tend to show gains in stability or economic reforms.
+- **Declining countries** usually face political conflict, corruption, or economic pressure.
 
-- Negative change may indicate:
-  - Conflict or political disruption
-  - Economic recession
-  - Reduced social security or increased corruption
+Although the dashboard focuses on static averages, the SQL work adds context by showing direction of change.
 
-These comparisons help track progress over medium-term periods.
+### ****2.5 GDP per Capita Analysis****
 
-**2.5 Top Countries by GDP per Capita**
+The dataset's GDP values (summed at 716.35 in the dashboard) help identify wealthy countries.
 
-GDP per capita rankings identify the world's wealthiest countries in the dataset.
+**Insight:**  
+High GDP contributes to happiness but doesn't guarantee it. Some wealthy countries still score lower due to distrust, inequality, or governance issues.
 
-**Insight**
+### ****2.6 Social Support Leaders****
 
-- Wealth strongly affects happiness but is **not the only driver**.
-- Some wealthy countries do not rank high in happiness due to inequality or governance problems.
+SQL analysis highlights countries with the strongest community support systems.
 
-**2.6 Top Countries with Highest Social Support**
+**Insight:**  
+Social support is one of the strongest predictors of happiness. Even countries with moderate GDP can achieve high happiness when support networks are strong.
 
-High social support scores reflect strong community bonds and reliable help networks.
+### ****2.7 Regional Happiness Patterns****
 
-**Insight**
+The bar charts on all three dashboard pages point to clear regional differences:
 
-- Social support is one of the strongest indicators of happiness.
-- Even countries with moderate GDP can achieve high happiness with strong social structures.
+Highest regional averages:
 
-**2.7 Average Happiness by Region**
+- Australia & New Zealand
+- North America
+- Western Europe
+- Latin America and the Caribbean
 
-This measures how entire regions perform on average.
+Lowest:
 
-**Insight**
+- Central and Eastern Europe
+- Middle East & North Africa
+- Sub-Saharan Africa
 
-- Western Europe and North America typically score highest.
-- Sub-Saharan Africa consistently shows lower regional averages due to economic and political challenges.
-- Regional variations reflect cultural, economic, and political differences.
+**What the chart shows:**  
+Regions with stable governments, strong economies, and better healthcare consistently score higher.
 
-**2.8 Lowest Corruption Countries**
+### ****2.8 Life Expectancy by Region (Pie Charts)****
 
-Low corruption is measured by low _Perceptions_of_Corruption_ scores.
+Both the dashboard and SQL findings confirm:
 
-**Insight**
+- Western Europe, North America, and Oceania dominate the life expectancy contributions.
+- Sub-Saharan Africa and parts of MENA have the lowest shares.
 
-- Countries with low corruption often rank high in happiness.
-- This suggests strong trust in public institutions and effective governance.
-- Transparency and fairness contribute heavily to well-being.
+**Chart interpretation:**  
+The pie charts make the health gap between regions easy to see. Higher life expectancy aligns closely with higher happiness.
 
-**2.9 Freedom vs. Happiness Relationship**
+### ****2.9 Confidence Interval (CI) Analysis****
 
-Exploring freedom and happiness together shows how personal and societal freedom impact well-being.
+The grouped bars compare:
 
-**Insight**
+- Lower CI
+- Upper CI
+- Score
 
-- Higher freedom generally correlates with higher happiness.
-- Exceptions occur in countries with high freedom but economic or social instability.
+Countries like Denmark, Switzerland, Norway, Finland, and Iceland show narrow CI ranges.
 
-**2.10 Year-Specific Happiness Rankings (Example: 2018)**
+**Insight:**  
+A small CI range means the country's ranking is stable and reliable. These visuals confirm that the top countries aren't just scoring high - they're consistently high.
 
-Ranking countries within a single year helps highlight top performers and yearly shifts.
+### ****2.10 Healthy Life Expectancy vs GDP per Capita****
 
-**Insight**
+A dual-line comparison is shown for countries such as Japan, Singapore, Israel, Canada, Sweden, Australia, and several European nations.
 
-- Useful for dashboards, media reports, and year-by-year comparisons.
-- Helps identify emerging trends within specific time frames.
+**What the chart shows:**  
+Most countries follow the same pattern: higher GDP equals higher healthy life expectancy.  
+Exceptions reveal efficient health systems despite modest income levels.
 
-**2.11 Missing Data Detection**
+### ****2.11 Freedom and Corruption Indicators (SQL Findings)****
 
-Checking for missing values ensures that analysis is reliable and complete.
+- Freedom tends to correlate with higher happiness.
+- Countries with low corruption generally score higher.
+- Outliers show that freedom alone isn't enough without economic or social stability.
 
-**Insight**
+The dashboard doesn't display these metrics directly, but SQL insights add depth to the interpretation.
 
-- Missing values can affect averages, rankings, and correlations.
-- Data cleaning is required before advanced modeling.
+### ****2.12 Country-Specific Example: Finland****
 
-**2.12 Country-Specific Trends (Example: Finland)**
+SQL results show Finland's long-term stability at the top of global rankings.
 
-Examining a single country's scores over all years shows its long-term trajectory.
+**Insight:**  
+Continuous high performance reflects strong public services, trust in institutions, and balanced socioeconomic development.
 
-**Insight**
+## **3\. Summary of Chart Interpretations**
 
-- Long-term improvement indicates policy success and stable growth.
-- Decline highlights stressors such as conflict, inequality, or economic downturn.
+- **Bar charts** show clear rankings by country and region.
+- **Line charts** reveal year-to-year stability with mild fluctuations.
+- **Pie charts** highlight regional disparities in life expectancy.
+- **Grouped bars** present confidence intervals, helping judge ranking reliability.
+- **Combined metric visuals** help connect happiness score with life expectancy and GDP.
 
-**3\. Summary of Findings**
+Together, all visuals give a rounded view of global well-being.
 
-**Overall Patterns**
+## **4\. Overall Patterns**
 
-- Northern European countries dominate global happiness rankings.
-- Social support, trust, and freedom are consistently strong predictors of high happiness scores.
-- Wealth contributes to happiness, but only when combined with low corruption and strong social systems.
+- Northern Europe dominates global happiness rankings.
+- Social support, freedom, trust, and good governance have stronger influence than raw GDP.
+- Wealth matters, but only when combined with fairness, safety, and strong community life.
+- Global happiness is broadly stable year-to-year.
+- Regions like Sub-Saharan Africa and MENA face deep structural challenges.
 
-**Trends Over Time**
+## **5\. Final Conclusion**
 
-- Global happiness tends to be stable year-to-year.
-- Significant fluctuations are usually tied to major economic or political events.
+The combined dashboard and SQL insights create a full picture of global happiness. The world's happiest countries score high not just because they are wealthy, but because they pair economic strength with trust, strong social support, and good governance.
 
-**Improvement & Decline**
-
-- Some nations show dramatic improvements over multiple years.
-- Others experience noticeable declines due to unrest, recession, or governance issues.
-
-**Data Quality**
-
-- Missing data exists and must be addressed before applying machine learning or forecasting.
-
-**4\. Final Conclusion**
-
-This analysis provides a comprehensive view of global happiness, identifying the most influential factors, long-term leaders, rising and declining countries, and regional patterns.
-
-The results support:
-
-- Policy decision-making
-- International development research
-- Power BI dashboards
-- Trend forecasting
-- Data storytelling and presentations
+The five-year trend shows steady global well-being with some variation, while the regional charts highlight deep inequalities.
